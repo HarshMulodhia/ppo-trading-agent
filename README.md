@@ -12,7 +12,6 @@ This project implements a **Single-Agent Adaptive Trading Agent** that learns op
 - Includes comprehensive backtesting framework
 - Production-ready with risk management constraints
 
-**Timeline:** 3-4 months | **Difficulty:** Beginner-Intermediate | **Status:** Production-Ready
 
 ## Quick Start
 
@@ -330,7 +329,7 @@ See [docs/TROUBLESHOOTING.md](docs/TROUBLESHOOTING.md) for more issues.
 ```bibtex
 @software{ppo_trading_agent_2025,
   title={Single-Agent Adaptive Trading Agent with PPO},
-  author={Your Name},
+  author={Harsh Mulodhia},
   year={2025},
   url={https://github.com/yourusername/ppo-trading-agent}
 }
