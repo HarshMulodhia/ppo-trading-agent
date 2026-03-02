@@ -95,9 +95,9 @@ class TradingEnv(gym.Env):
     def reset(
         self,
         *,
-        seed: int | None = None,
-        options: dict[str, Any] | None = None,
-    ) -> tuple[np.ndarray, dict[str, Any]]:
+        seed: Optional[int] = None,
+        options: Optional[Dict[str, Any]] = None,
+    ) -> Tuple[np.ndarray, Dict[str, Any]]:
         """
         Reset environment to initial state.
 
