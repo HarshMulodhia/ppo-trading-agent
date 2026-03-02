@@ -30,7 +30,7 @@ jobs:
       
       - name: Lint with pylint
         run: |
-          pylint src/ scripts/ --rcfile=.pylintrc --exit-zero
+          pylint src/ scripts/ --exit-zero
       
       - name: Format check with black
         run: |
