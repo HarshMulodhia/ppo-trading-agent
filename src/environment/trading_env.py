@@ -248,7 +248,7 @@ class TradingEnv(gym.Env):
 
         # Component 3: Drawdown penalty
         max_dd = self._compute_max_drawdown(portfolio_values)
-        dd_penalty = max(-0.2 * max(0, max_dd - 0.15), -0.5)  # Penalize if DD > 15%
+        dd_penalty = max(-0.2 * max(0, -max_dd - 0.15), -0.5)  # Penalize if DD > 15%
 
         # Component 4: Trading frequency penalty
         trade_penalty = 0.0

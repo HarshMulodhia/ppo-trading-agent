@@ -18,10 +18,10 @@ import numpy as np
 import torch
 import yaml
 
-from agent import PPOAgent
-from environment import TradingEnv
-from reward import RewardShaper
-from utils import timing
+from ..agent import PPOAgent
+from ..environment import TradingEnv
+from ..reward import RewardShaper
+from ..utils import timing
 
 logger = logging.getLogger(__name__)
 
@@ -471,7 +471,7 @@ class PPOTrainer:
 
         logger.info(f"Loaded checkpoint from {checkpoint_path}")
 
-    def validate(self, validation_env: TradingEnv, num_episodes: int = 5) -> float[Any]:
+    def validate(self, validation_env: TradingEnv, num_episodes: int = 5) -> float:
         """
         Validate agent performance on validation set.
 

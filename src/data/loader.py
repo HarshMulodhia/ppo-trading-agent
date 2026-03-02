@@ -83,7 +83,7 @@ class DataLoader:
         # Check for NaN
         if data.isnull().any().any():
             logger.warning("Data contains NaN values - filling with forward fill")
-            data = data.fillna(method="ffill").fillna(method="bfill")
+            data = data.ffill().bfill()
 
         # Check for duplicates
         if data.index.duplicated().any():

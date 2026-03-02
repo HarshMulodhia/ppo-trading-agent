@@ -2,7 +2,7 @@
 
 ################################################################################
 # Environment Setup Script
-# Sets up the complete development and production environment
+# Sets up the complete development and production environment using Conda
 ################################################################################
 
 set -e
@@ -21,65 +21,67 @@ echo "   PPO Trading Agent - Environment Setup"
 echo "=========================================="
 echo -e "${NC}\n"
 
-# Check Python version
-echo -e "${YELLOW}[1/8] Checking Python version...${NC}"
-python_version=$(python3 --version 2>&1)
-echo "Found: $python_version"
-
-if ! python3 -c 'import sys; exit(0 if sys.version_info >= (3, 8) else 1)'; then
-    echo -e "${RED}Error: Python 3.8+ required${NC}"
+# Check for conda
+echo -e "${YELLOW}[1/7] Checking for Conda installation...${NC}"
+if ! command -v conda &> /dev/null; then
+    echo -e "${RED}Error: Conda is not installed.${NC}"
+    echo "Please install Miniconda or Anaconda first:"
+    echo "  https://docs.conda.io/en/latest/miniconda.html"
     exit 1
 fi
-echo -e "${GREEN}✓ Python version OK${NC}\n"
+conda_version=$(conda --version 2>&1)
+echo "Found: $conda_version"
+echo -e "${GREEN}✓ Conda is available${NC}\n"
 
-# Create virtual environment
-echo -e "${YELLOW}[2/8] Creating virtual environment...${NC}"
-if [ -d ".rl" ]; then
-    echo "Virtual environment already exists"
+# Create conda environment
+echo -e "${YELLOW}[2/7] Creating Conda environment...${NC}"
+if conda env list | grep -q "ppo-trading"; then
+    echo "Conda environment 'ppo-trading' already exists"
+    echo "To recreate, run: conda env remove -n ppo-trading && bash tools/setup_environment.sh"
 else
-    python3 -m venv .rl
-    echo -e "${GREEN}✓ Virtual environment created${NC}"
-fi
-
-# Activate virtual environment
-echo -e "${YELLOW}[3/8] Activating virtual environment...${NC}"
-source .rl/bin/activate
-echo -e "${GREEN}✓ Virtual environment activated${NC}\n"
-
-# Upgrade pip, setuptools, wheel
-echo -e "${YELLOW}[4/8] Upgrading pip, setuptools, wheel...${NC}"
-pip install --upgrade pip setuptools wheel
-echo -e "${GREEN}✓ Pip tools upgraded${NC}\n"
-
-# Install requirements
-echo -e "${YELLOW}[5/8] Installing Python dependencies...${NC}"
-if [ -f "requirements.txt" ]; then
-    pip install -r requirements.txt
-    echo -e "${GREEN}✓ Dependencies installed${NC}"
-else
-    echo -e "${RED}Error: requirements.txt not found${NC}"
-    exit 1
+    conda env create -f environment.yml
+    echo -e "${GREEN}✓ Conda environment created${NC}"
 fi
 echo
 
+# Activate environment
+echo -e "${YELLOW}[3/7] Activating Conda environment...${NC}"
+eval "$(conda shell.bash hook)"
+conda activate ppo-trading
+echo -e "${GREEN}✓ Conda environment activated${NC}\n"
+
+# Verify GPU support
+echo -e "${YELLOW}[4/7] Checking GPU/CUDA availability...${NC}"
+python -c "
+import torch
+if torch.cuda.is_available():
+    print(f'GPU: {torch.cuda.get_device_name(0)}')
+    print(f'CUDA Version: {torch.version.cuda}')
+    print('✓ GPU training is available')
+else:
+    print('No GPU detected - training will use CPU')
+    print('(This is OK for development, GPU recommended for full training)')
+"
+echo
+
+# Install package in development mode
+echo -e "${YELLOW}[5/7] Installing package in development mode...${NC}"
+pip install -e ".[dev]" --quiet
+echo -e "${GREEN}✓ Package installed${NC}\n"
+
 # Create directories
-echo -e "${YELLOW}[6/8] Creating project directories...${NC}"
+echo -e "${YELLOW}[6/7] Creating project directories...${NC}"
 mkdir -p data models logs results .cache deployment/state reports monitoring/{prometheus,grafana/provisioning}
 echo -e "${GREEN}✓ Directories created${NC}\n"
 
-# Install development tools
-echo -e "${YELLOW}[7/8] Installing development tools...${NC}"
-pip install pytest pytest-cov black flake8 isort mypy
-echo -e "${GREEN}✓ Development tools installed${NC}\n"
-
 # Display information
-echo -e "${YELLOW}[8/8] Setup Summary${NC}"
+echo -e "${YELLOW}[7/7] Setup Summary${NC}"
 echo "=========================================="
 echo -e "${GREEN}✓ Environment Setup Complete!${NC}"
 echo "=========================================="
 echo
 echo "Next steps:"
-echo "  1. Activate environment: source venv/bin/activate"
+echo "  1. Activate environment: conda activate ppo-trading"
 echo "  2. Download data: python scripts/download_data.py --symbol AAPL"
 echo "  3. Train model: python scripts/train.py"
 echo "  4. Run tests: bash tools/run_tests.sh"
