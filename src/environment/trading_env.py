@@ -10,7 +10,7 @@ This module implements a custom Gymnasium environment for trading that:
 """
 
 import logging
-from typing import Any, Dict, Optional, Tuple
+from typing import Any, Dict, List, Optional, Tuple, Union
 
 import gymnasium as gym
 import numpy as np
@@ -281,7 +281,7 @@ class TradingEnv(gym.Env):
 
         return float(np.min(drawdown))
 
-    def render(self) -> RenderFrame | list[RenderFrame] | None:
+    def render(self) -> Optional[Union[RenderFrame, List[RenderFrame]]]:
         """
         Render environment state (optional).
 
