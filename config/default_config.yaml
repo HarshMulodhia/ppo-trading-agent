@@ -1,0 +1,182 @@
+# Default Training Configuration for PPO Trading Agent
+# YAML format - modify parameters as needed
+
+ppo:
+  # Learning Rate
+  learning_rate: 3e-4
+  
+  # Rollout Parameters
+  n_steps: 2048                # Steps per rollout
+  batch_size: 64               # Mini-batch size
+  n_epochs: 10                 # Passes over collected data
+  
+  # Discount Factors
+  gamma: 0.99                  # Temporal discount factor
+  gae_lambda: 0.95             # GAE decay parameter (λ)
+  
+  # PPO Hyperparameters
+  clip_range: 0.2              # Clipping range (ε)
+  clip_range_vf: null          # Value function clipping range
+  
+  # Regularization
+  ent_coef: 0.01               # Entropy coefficient for exploration
+  vf_coef: 0.5                 # Value function loss coefficient
+  max_grad_norm: 0.5           # Gradient clipping norm
+  
+  # Technical
+  use_sde: false               # State-Dependent Exploration
+  sde_sample_freq: -1
+  target_kl: null              # Target KL divergence
+  use_rms_prop: true           # Use RMSprop optimizer
+
+training:
+  # Training Duration
+  total_timesteps: 500000
+  
+  # Evaluation
+  eval_freq: 5000              # Evaluation frequency
+  eval_episodes: 3             # Episodes per evaluation
+  
+  # Checkpointing
+  save_freq: 50000             # Save model every N steps
+  keep_best_model: true
+  
+  # Logging
+  log_interval: 10             # Log interval
+  verbose: 1                   # Verbosity level (0-2)
+  
+  # Early Stopping
+  early_stopping_enabled: false
+  early_stopping_threshold: 1.0  # Sharpe ratio threshold
+  early_stopping_patience: 20    # Episodes to wait
+
+environment:
+  # Market Data
+  symbol: "NIFTY50.NS"
+  data_source: "yfinance"      # yfinance, nsepy, csv
+  
+  # Date Range
+  train_start: "2019-01-01"
+  train_end: "2022-12-31"
+  val_start: "2023-01-01"
+  val_end: "2023-06-30"
+  test_start: "2023-07-01"
+  test_end: "2023-12-31"
+  
+  # Initial Capital
+  initial_capital: 100000.0
+  
+  # Trading Parameters
+  max_position: 10             # Maximum position size
+  min_position: -10            # Minimum position (short)
+  transaction_cost_pct: 0.001  # 0.1% per trade
+  slippage_pct: 0.0005         # 0.05% slippage
+  
+  # Features
+  lookback_window: 20          # Rolling statistics window
+  include_technical_indicators: true
+  indicator_params:
+    rsi_period: 14
+    macd_short: 12
+    macd_long: 26
+    bb_period: 20
+    bb_std: 2.0
+
+reward:
+  # Reward Function Type
+  function_type: "composite"   # composite, sharpe_only, pnl_only
+  
+  # Weights for composite reward
+  pnl_weight: 0.5
+  sharpe_weight: 0.3
+  risk_weight: 0.2
+  
+  # Risk Parameters
+  max_drawdown_target: 0.15    # 15% max drawdown
+  drawdown_penalty: 0.1
+  
+  # Trading Penalties
+  trade_penalty: 0.01          # Per trade
+  overtrading_penalty: 0.005   # For excessive trading
+
+network:
+  # Network Architecture
+  policy_type: "MlpPolicy"     # MlpPolicy or CnnPolicy
+  net_arch:
+    pi: [256, 256]             # Actor network
+    vf: [256, 256]             # Critic network
+  
+  # Activation Function
+  activation_fn: "ReLU"        # ReLU, Tanh, etc.
+  
+  # Layer Normalization
+  use_layer_norm: true
+  
+  # Dropout
+  dropout_rate: 0.0
+  
+  # Weight Initialization
+  init_fn: "xavier_uniform"
+
+optimization:
+  # Optimizer
+  optimizer: "Adam"            # Adam, RMSprop, SGD
+  
+  # Learning Rate Schedule
+  lr_schedule: "constant"      # constant, linear, exponential
+  
+  # Learning Rate Schedule Parameters
+  schedule_params:
+    initial_lr: 3e-4
+    final_lr: 1e-4
+    total_steps: 500000        # For schedule decay
+
+data:
+  # Data Preprocessing
+  normalize_features: true
+  normalization_method: "zscore"  # zscore, minmax
+  
+  # Train/Val/Test Split
+  train_ratio: 0.7
+  val_ratio: 0.1
+  test_ratio: 0.2
+  
+  # Batch Processing
+  batch_size: 64
+  shuffle_data: true
+  
+  # Data Augmentation
+  augment_data: false
+
+monitoring:
+  # Monitoring & Logging
+  use_tensorboard: true
+  use_wandb: false
+  
+  # Metrics to Track
+  track_metrics:
+    - episode_reward
+    - episode_length
+    - sharpe_ratio
+    - max_drawdown
+    - win_rate
+  
+  # Checkpoint Parameters
+  save_best_model: true
+  best_model_metric: "sharpe_ratio"  # Metric to optimize
+
+debugging:
+  # Debug Mode
+  debug_mode: false
+  
+  # Seed for Reproducibility
+  seed: 42
+  
+  # Deterministic Mode
+  deterministic: false
+  
+  # Validation Check Freq
+  env_validation_freq: 1000
+  
+  # Profile Training
+  profile_training: false

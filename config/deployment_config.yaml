@@ -1,0 +1,138 @@
+# Production Deployment Configuration
+# Settings for live trading deployment
+
+deployment:
+  # Mode settings
+  mode: "simulation"  # Options: simulation, paper, live
+  
+  # Model settings
+  model:
+    version: "latest"
+    device: "cpu"  # Options: cpu, cuda
+    inference_device: "cpu"
+    batch_inference: false
+  
+  # Trading parameters
+  trading:
+    initial_capital: 100000.0
+    max_position_size: 0.1  # 10% of capital per trade
+    max_leverage: 1.0
+    transaction_cost: 0.001
+    slippage: 0.0005
+  
+  # Risk management
+  risk_management:
+    enabled: true
+    
+    # Position limits
+    max_daily_loss: 0.05  # 5% daily loss limit
+    max_position_value: 10000  # Max per position
+    
+    # Stop loss
+    stop_loss_pct: 0.02  # 2% stop loss
+    take_profit_pct: 0.05  # 5% take profit
+    
+    # Portfolio constraints
+    max_concentration: 0.3  # Max 30% in one asset
+    min_portfolio_value: 50000  # Min portfolio size
+
+# Data feed settings
+data_feed:
+  # Data source
+  source: "yahoo"  # Options: yahoo, nse, csv, api
+  
+  # Update frequency
+  frequency: "1min"  # Options: 1min, 5min, 15min, daily
+  
+  # Historical data
+  lookback_period: 252  # Days of historical data
+  
+  # Caching
+  cache:
+    enabled: true
+    cache_dir: ".cache"
+    cache_ttl: 3600  # Cache time to live (seconds)
+
+# Monitoring
+monitoring:
+  # Performance monitoring
+  enabled: true
+  
+  # Update frequency
+  update_interval: 300  # Seconds (5 minutes)
+  
+  # Metrics to monitor
+  metrics:
+    - equity
+    - daily_return
+    - sharpe_ratio
+    - max_drawdown
+    - num_trades
+  
+  # Drift detection
+  drift_detection:
+    enabled: true
+    threshold: 2.0  # Standard deviations
+    lookback: 100  # Trades
+  
+  # Alerts
+  alerts:
+    enabled: true
+    email: false
+    slack: false
+    
+    # Alert conditions
+    conditions:
+      - max_daily_loss_exceeded
+      - drift_detected
+      - model_error
+      - data_feed_error
+
+# Logging and persistence
+logging:
+  level: "INFO"
+  log_file: "logs/deployment.log"
+  
+  # Trade logging
+  trade_log: "logs/trades.csv"
+  performance_log: "logs/performance.csv"
+  
+  # Persistence
+  state_dir: "deployment/state"
+  checkpoint_interval: 3600  # Save state hourly
+
+# API and integration
+api:
+  # Broker API
+  broker:
+    type: "paper"  # Options: paper, interactive_brokers, alpaca, etc
+    
+  # Webhook notifications
+  webhook:
+    enabled: false
+    url: ""
+
+# Fallback and error handling
+error_handling:
+  # Max consecutive errors before shutdown
+  max_consecutive_errors: 5
+  
+  # Reconnection
+  auto_reconnect: true
+  reconnect_delay: 60  # Seconds
+  
+  # Graceful shutdown
+  shutdown_on_error: true
+
+# Performance tuning
+performance:
+  # Parallel processing
+  use_multiprocessing: false
+  num_workers: 1
+  
+  # Memory management
+  memory_limit: 2048  # MB
+  
+  # Timeout settings
+  inference_timeout: 5.0  # Seconds
+  api_timeout: 10.0  # Seconds

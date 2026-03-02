@@ -1,0 +1,89 @@
+# Evaluation Configuration
+# Settings for backtesting and evaluation
+
+evaluation:
+  # Backtesting parameters
+  initial_capital: 100000.0
+  transaction_cost: 0.001
+  slippage: 0.0005
+  
+  # Test settings
+  num_episodes: 10
+  episode_length: 500
+  
+  # Metrics to compute
+  metrics:
+    - total_return
+    - annual_return
+    - sharpe_ratio
+    - sortino_ratio
+    - calmar_ratio
+    - max_drawdown
+    - win_rate
+    - profit_factor
+    - avg_trade_return
+    - num_trades
+    - holding_period_avg
+
+# Baseline comparison
+baselines:
+  enabled: true
+  strategies:
+    - buy_and_hold
+    - momentum
+    - random
+  
+  # Baseline parameters
+  buy_and_hold:
+    description: "Buy and hold strategy"
+  
+  momentum:
+    lookback: 20
+    description: "Simple momentum strategy"
+  
+  random:
+    description: "Random actions"
+
+# Risk analysis
+risk_analysis:
+  # Value at Risk (VaR)
+  var_confidence: 0.95
+  
+  # Conditional VaR
+  cvar_confidence: 0.95
+  
+  # Drawdown analysis
+  max_drawdown_lookback: 252
+  
+  # Return distribution
+  return_bins: 50
+
+# Reporting
+reporting:
+  # Report formats
+  formats:
+    - markdown
+    - json
+    - html
+  
+  # Report sections
+  sections:
+    - summary
+    - metrics
+    - comparison
+    - risk
+    - trades
+    - returns_distribution
+  
+  # Output directory
+  output_dir: "reports"
+  
+  # Include visualizations
+  visualizations: true
+  visualization_dir: "reports/visualizations"
+
+# Logging
+logging:
+  level: "INFO"
+  save_results: true
+  results_dir: "results"

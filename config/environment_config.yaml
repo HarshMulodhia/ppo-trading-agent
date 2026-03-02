@@ -1,0 +1,77 @@
+# Environment Configuration
+# Settings for the trading environment
+
+environment:
+  # Initial capital for trading
+  initial_capital: 100000.0
+  
+  # Transaction costs
+  transaction_cost: 0.001  # 0.1%
+  slippage: 0.0005  # 0.05%
+  
+  # Position constraints
+  max_position_size: 1.0  # Can be 100% invested
+  max_leverage: 1.0  # No leverage
+  
+  # Episode settings
+  max_steps: 1000
+  lookback_window: 20
+  
+  # Observation space
+  observation_features:
+    - open
+    - high
+    - low
+    - close
+    - volume
+  
+  # Action space
+  action_space:
+    - HOLD: 0
+    - BUY: 1
+    - SELL: 2
+  
+  # Reward function
+  reward:
+    type: "sharpe_based"  # Options: simple, sharpe_based, custom
+    weights:
+      returns: 0.7
+      sharpe: 0.2
+      drawdown_penalty: 0.1
+
+# Data settings
+data:
+  # Data frequency
+  frequency: "daily"
+  
+  # Required columns
+  required_columns:
+    - open
+    - high
+    - low
+    - close
+    - volume
+  
+  # Preprocessing
+  preprocessing:
+    remove_outliers: true
+    outlier_threshold: 3.0
+    normalize_prices: true
+    normalize_method: "minmax"  # Options: minmax, zscore
+    
+  # Missing data handling
+  missing_data_method: "forward_fill"  # Options: forward_fill, interpolate, drop
+
+# Logging settings
+logging:
+  level: "INFO"  # Options: DEBUG, INFO, WARNING, ERROR
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  log_dir: "logs"
+
+# Paths
+paths:
+  data_dir: "data"
+  model_dir: "models"
+  cache_dir: ".cache"
+  results_dir: "results"
+  logs_dir: "logs"

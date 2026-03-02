@@ -1,0 +1,14 @@
+{
+  "symbol": "^NSEI",
+  "source": "yahoo",
+  "start_date": "2019-01-01",
+  "end_date": "2023-12-31",
+  "records": 1232,
+  "columns": [
+    "close",
+    "high",
+    "low",
+    "open",
+    "volume"
+  ]
+}

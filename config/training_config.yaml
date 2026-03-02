@@ -1,0 +1,78 @@
+# Training Configuration
+# PPO agent training parameters
+
+training:
+  # Algorithm settings
+  algorithm: "PPO"
+  
+  # Network architecture
+  network:
+    hidden_sizes: [128, 64]
+    activation: "relu"
+    output_activation: "linear"
+  
+  # Learning parameters
+  learning_rate: 0.0003
+  learning_rate_schedule: "constant"  # Options: constant, decay, annealing
+  
+  # Batch and episode settings
+  batch_size: 64
+  rollout_buffer_size: 2048
+  episodes: 1000
+  steps_per_episode: 500
+  
+  # Discount factors
+  gamma: 0.99  # Discount factor
+  gae_lambda: 0.95  # GAE lambda for advantage estimation
+  
+  # PPO specific
+  clip_ratio: 0.2
+  entropy_coeff: 0.01
+  value_coeff: 0.5
+  max_grad_norm: 0.5
+  
+  # Optimization
+  num_epochs: 3
+  num_minibatches: 4
+  optimizer: "adam"  # Options: adam, rmsprop, sgd
+  
+  # Regularization
+  l2_reg: 0.0
+  dropout: 0.0
+  
+  # Device settings
+  device: "cpu"  # Options: cpu, cuda
+  seed: 42
+  
+  # Checkpointing
+  checkpoint_interval: 100
+  checkpoint_dir: "models/checkpoints"
+  
+  # Early stopping
+  early_stopping:
+    enabled: true
+    patience: 50
+    min_delta: 0.0001
+
+# Validation settings
+validation:
+  # Validation frequency
+  validation_interval: 50
+  
+  # Validation parameters
+  num_validation_episodes: 5
+  
+  # Metrics to track
+  metrics:
+    - episode_return
+    - sharpe_ratio
+    - max_drawdown
+    - win_rate
+
+# Logging
+logging:
+  level: "INFO"
+  log_interval: 10
+  save_interval: 50
+  tensorboard: true
+  tensorboard_dir: "runs"
