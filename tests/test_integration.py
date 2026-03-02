@@ -12,8 +12,12 @@ from unittest.mock import Mock
 import numpy as np
 import pytest
 
-from src.deployment import (InferenceEngine, ModelManager, PerformanceMonitor,
-                            RiskManager)
+from src.deployment import (
+    InferenceEngine,
+    ModelManager,
+    PerformanceMonitor,
+    RiskManager,
+)
 
 # Configure logging for tests
 logger = logging.getLogger(__name__)

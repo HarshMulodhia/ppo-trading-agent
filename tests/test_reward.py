@@ -219,7 +219,11 @@ class TestRewardShaper:
 
         # Should return middle value
         middle = (
-            (RewardShaper.normalize.__defaults__[0] + RewardShaper.normalize.__defaults__[1]) / 2
+            (
+                RewardShaper.normalize.__defaults__[0]
+                + RewardShaper.normalize.__defaults__[1]
+            )
+            / 2
             if hasattr(RewardShaper.normalize, "__defaults__")
             else 0.0
         )
@@ -540,7 +544,10 @@ class TestRewardIntegration:
 
         # Compute rewards
         rewards = np.array(
-            [sharpe_reward(portfolio_values), pnl_reward(portfolio_values[-1], portfolio_values[0])]
+            [
+                sharpe_reward(portfolio_values),
+                pnl_reward(portfolio_values[-1], portfolio_values[0]),
+            ]
         )
 
         # Normalize

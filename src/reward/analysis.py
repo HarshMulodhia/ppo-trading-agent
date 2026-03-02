@@ -36,7 +36,9 @@ class RewardAnalyzer:
         """
         self.rewards_history.append(rewards.copy())
 
-    def analyze_distribution(self, rewards: Optional[np.ndarray] = None) -> Dict[str, float]:
+    def analyze_distribution(
+        self, rewards: Optional[np.ndarray] = None
+    ) -> Dict[str, float]:
         """
         Analyze reward distribution.
 
@@ -152,7 +154,9 @@ class RewardAnalyzer:
 
         return analysis
 
-    def reward_quality_metrics(self, rewards: Optional[np.ndarray] = None) -> Dict[str, float]:
+    def reward_quality_metrics(
+        self, rewards: Optional[np.ndarray] = None
+    ) -> Dict[str, float]:
         """
         Compute reward quality metrics.
 

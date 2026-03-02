@@ -149,7 +149,9 @@ class DataCache:
                 logger.info("Cleared entire cache")
             else:
                 # Clear specific key
-                for path in self.cache_dir.glob(f"{hashlib.md5(key.encode()).hexdigest()}.*"):
+                for path in self.cache_dir.glob(
+                    f"{hashlib.md5(key.encode()).hexdigest()}.*"
+                ):
                     path.unlink()
                     logger.info(f"Cleared cache for key: {key}")
 

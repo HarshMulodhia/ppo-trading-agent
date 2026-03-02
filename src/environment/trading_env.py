@@ -256,7 +256,9 @@ class TradingEnv(gym.Env):
             trade_penalty = -0.01
 
         # Composite reward
-        reward = 0.5 * recent_return + 0.3 * sharpe_approx + 0.2 * dd_penalty + trade_penalty
+        reward = (
+            0.5 * recent_return + 0.3 * sharpe_approx + 0.2 * dd_penalty + trade_penalty
+        )
 
         return float(reward)
 
@@ -310,7 +312,9 @@ class TradingEnv(gym.Env):
         if len(returns) == 0:
             return {}
 
-        total_return = (portfolio_values[-1] - portfolio_values[0]) / portfolio_values[0]
+        total_return = (portfolio_values[-1] - portfolio_values[0]) / portfolio_values[
+            0
+        ]
         sharpe = np.mean(returns) / (np.std(returns) + 1e-8) * np.sqrt(252)
         max_dd = self._compute_max_drawdown(portfolio_values)
         win_rate = np.mean(returns > 0)

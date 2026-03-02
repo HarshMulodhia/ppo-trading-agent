@@ -52,7 +52,9 @@ def main():
     """Run hyperparameter tuning."""
     parser = argparse.ArgumentParser(description="Tune hyperparameters")
     parser.add_argument("--trials", type=int, default=50, help="Number of trials")
-    parser.add_argument("--output", type=str, default="tuning_results", help="Output directory")
+    parser.add_argument(
+        "--output", type=str, default="tuning_results", help="Output directory"
+    )
     parser.add_argument("--seed", type=int, default=42, help="Random seed")
 
     args = parser.parse_args()

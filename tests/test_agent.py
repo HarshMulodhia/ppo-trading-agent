@@ -23,8 +23,7 @@ try:
 except ImportError:
     HAS_SB3 = False
 
-from src.agent import (ActorCriticNetwork, ExperienceBuffer, PPOAgent,
-                       RolloutBuffer)
+from src.agent import ActorCriticNetwork, ExperienceBuffer, PPOAgent, RolloutBuffer
 
 logger = logging.getLogger(__name__)
 
@@ -100,7 +99,9 @@ class TestActorCriticNetwork:
         assert value.shape == (batch_size, 1)
 
         # Verify action probabilities sum to 1
-        assert torch.allclose(action_probs.sum(dim=1), torch.ones(batch_size), atol=1e-5)
+        assert torch.allclose(
+            action_probs.sum(dim=1), torch.ones(batch_size), atol=1e-5
+        )
 
     def test_get_action_sampling(self):
         """Test action sampling from policy."""
@@ -506,10 +507,14 @@ class TestPPOAgent:
         obs, _ = sample_env.reset()
 
         # Multiple stochastic predictions should vary
-        actions_stochastic = [agent.predict(obs, deterministic=False) for _ in range(10)]
+        actions_stochastic = [
+            agent.predict(obs, deterministic=False) for _ in range(10)
+        ]
 
         # Deterministic predictions should be same
-        actions_deterministic = [agent.predict(obs, deterministic=True) for _ in range(10)]
+        actions_deterministic = [
+            agent.predict(obs, deterministic=True) for _ in range(10)
+        ]
 
         assert len(set(actions_deterministic)) == 1  # All same
 
@@ -637,8 +642,7 @@ class TestEdgeCasesAndErrors:
 # ============================================================================
 def test_imports():
     """Test all required imports are available."""
-    from src.agent import (ActorCriticNetwork, ExperienceBuffer, PPOAgent,
-                           RolloutBuffer)
+    from src.agent import ActorCriticNetwork, ExperienceBuffer, PPOAgent, RolloutBuffer
 
     assert PPOAgent is not None
     assert ActorCriticNetwork is not None

@@ -55,7 +55,9 @@ def retry(max_attempts: int = 3, delay: float = 1.0):
                 except Exception:
                     if attempt == max_attempts - 1:
                         raise
-                    logger.warning(f"Attempt {attempt + 1} failed, retrying in {delay}s")
+                    logger.warning(
+                        f"Attempt {attempt + 1} failed, retrying in {delay}s"
+                    )
                     time.sleep(delay)
 
         return wrapper
@@ -107,7 +109,8 @@ def validate_types(**type_checks):
                 if arg_name in kwargs:
                     if not isinstance(kwargs[arg_name], expected_type):
                         raise TypeError(
-                            f"{arg_name} must be {expected_type}, " f"got {type(kwargs[arg_name])}"
+                            f"{arg_name} must be {expected_type}, "
+                            f"got {type(kwargs[arg_name])}"
                         )
 
             return func(*args, **kwargs)

@@ -80,7 +80,9 @@ class RiskManager:
         loss_ratio = abs(current_pnl) / self.initial_capital
 
         if loss_ratio > self.max_daily_loss:
-            logger.warning(f"Daily loss {loss_ratio:.2%} exceeds limit {self.max_daily_loss:.2%}")
+            logger.warning(
+                f"Daily loss {loss_ratio:.2%} exceeds limit {self.max_daily_loss:.2%}"
+            )
             return False
 
         return True

@@ -52,7 +52,9 @@ def compute_rsi(prices: np.ndarray, period: int = 14) -> np.ndarray:
         avg_loss[i] = (avg_loss[i - 1] * (period - 1) + losses[i - 1]) / period
 
     # Calculate RS and RSI
-    rs = np.divide(avg_gain, avg_loss, where=avg_loss != 0, out=np.full_like(avg_loss, 0.0))
+    rs = np.divide(
+        avg_gain, avg_loss, where=avg_loss != 0, out=np.full_like(avg_loss, 0.0)
+    )
     rsi = 100 - (100 / (1 + rs))
 
     return rsi

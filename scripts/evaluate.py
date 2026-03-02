@@ -23,12 +23,20 @@ logger = logging.getLogger(__name__)
 def main():
     """Run evaluation and backtesting."""
     parser = argparse.ArgumentParser(description="Evaluate trading agent")
-    parser.add_argument("--model", type=str, required=True, help="Model path or version ID")
+    parser.add_argument(
+        "--model", type=str, required=True, help="Model path or version ID"
+    )
     parser.add_argument("--data", type=str, required=True, help="Test data path")
-    parser.add_argument("--output", type=str, default="results", help="Output directory")
+    parser.add_argument(
+        "--output", type=str, default="results", help="Output directory"
+    )
     parser.add_argument("--episodes", type=int, default=10, help="Evaluation episodes")
-    parser.add_argument("--initial-capital", type=float, default=100000, help="Initial capital")
-    parser.add_argument("--visualize", action="store_true", help="Generate visualizations")
+    parser.add_argument(
+        "--initial-capital", type=float, default=100000, help="Initial capital"
+    )
+    parser.add_argument(
+        "--visualize", action="store_true", help="Generate visualizations"
+    )
 
     args = parser.parse_args()
 

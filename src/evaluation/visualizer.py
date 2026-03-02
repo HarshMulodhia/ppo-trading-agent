@@ -169,7 +169,9 @@ class ResultsVisualizer:
                     label="Sell" if trade == trades[0] else "",
                 )
 
-            ax.set_title("Equity Curve with Trade Markers", fontsize=14, fontweight="bold")
+            ax.set_title(
+                "Equity Curve with Trade Markers", fontsize=14, fontweight="bold"
+            )
             ax.set_xlabel("Time Step")
             ax.set_ylabel("Portfolio Value ($)")
             ax.legend()
@@ -241,10 +243,14 @@ class ResultsVisualizer:
             <table>
         """
 
-        html_content += f"<tr><td>Initial Equity</td><td>${equity_curve[0]:,.2f}</td></tr>"
-        html_content += f"<tr><td>Final Equity</td><td>${equity_curve[-1]:,.2f}</td></tr>"
-        html_content += f"<tr><td>Total Return</td><td>{((equity_curve[-1]-equity_curve[0]) /
-                                                         equity_curve[0]*100):.2f}%</td></tr>"
+        html_content += (
+            f"<tr><td>Initial Equity</td><td>${equity_curve[0]:,.2f}</td></tr>"
+        )
+        html_content += (
+            f"<tr><td>Final Equity</td><td>${equity_curve[-1]:,.2f}</td></tr>"
+        )
+        total_return = (equity_curve[-1] - equity_curve[0]) / equity_curve[0] * 100
+        html_content += f"<tr><td>Total Return</td><td>{total_return:.2f}%</td></tr>"
 
         html_content += """
             </table>

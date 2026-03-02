@@ -58,7 +58,8 @@ class DataSplitter:
         self.test = self.data.iloc[train_size + val_size :]
 
         logger.info(
-            f"Split data: train={len(self.train)}, " f"val={len(self.val)}, test={len(self.test)}"
+            f"Split data: train={len(self.train)}, "
+            f"val={len(self.val)}, test={len(self.test)}"
         )
 
         return self.train, self.val, self.test

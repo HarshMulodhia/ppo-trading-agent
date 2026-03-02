@@ -20,7 +20,9 @@ def main():
     """Download market data."""
     parser = argparse.ArgumentParser(description="Download market data")
     parser.add_argument("--symbol", type=str, required=True, help="Stock symbol")
-    parser.add_argument("--source", type=str, default="yahoo", help="Data source (yahoo, nse, csv)")
+    parser.add_argument(
+        "--source", type=str, default="yahoo", help="Data source (yahoo, nse, csv)"
+    )
     parser.add_argument("--start", type=str, default="2020-01-01", help="Start date")
     parser.add_argument("--end", type=str, default="2023-01-01", help="End date")
     parser.add_argument("--output", type=str, default="data", help="Output directory")

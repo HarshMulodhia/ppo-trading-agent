@@ -73,7 +73,9 @@ class AgentEvaluator:
 
             episode_returns.append(episode_return)
             episode_lengths.append(steps)
-            logger.info(f"Episode {episode+1}: Return={episode_return:.2f}, Length={steps}")
+            logger.info(
+                f"Episode {episode+1}: Return={episode_return:.2f}, Length={steps}"
+            )
 
         metrics = self.compute_metrics(episode_returns, episode_lengths)
         self.results.append(metrics)

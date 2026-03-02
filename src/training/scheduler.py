@@ -47,7 +47,9 @@ class LRScheduler:
 class ExponentialDecay(LRScheduler):
     """Exponential decay scheduler."""
 
-    def __init__(self, initial_lr: float, decay_rate: float = 0.95, steps_per_decay: int = 1000):
+    def __init__(
+        self, initial_lr: float, decay_rate: float = 0.95, steps_per_decay: int = 1000
+    ):
         """
         Initialize exponential decay.
 
@@ -125,7 +127,11 @@ class PolynomialDecay(LRScheduler):
     """Polynomial decay scheduler."""
 
     def __init__(
-        self, initial_lr: float, total_steps: int, power: float = 1.0, min_lr: float = 0.0
+        self,
+        initial_lr: float,
+        total_steps: int,
+        power: float = 1.0,
+        min_lr: float = 0.0,
     ):
         """
         Initialize polynomial decay.
@@ -158,7 +164,9 @@ class PolynomialDecay(LRScheduler):
 class WarmupScheduler(LRScheduler):
     """Learning rate warmup followed by decay."""
 
-    def __init__(self, initial_lr: float, warmup_steps: int, base_scheduler: LRScheduler):
+    def __init__(
+        self, initial_lr: float, warmup_steps: int, base_scheduler: LRScheduler
+    ):
         """
         Initialize warmup scheduler.
 
