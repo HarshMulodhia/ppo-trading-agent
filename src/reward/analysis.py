@@ -5,7 +5,7 @@ Analyzing reward signals during training.
 """
 
 import logging
-from typing import Dict, List, Optional
+from typing import Any, Dict, List, Optional
 
 import numpy as np
 
@@ -36,7 +36,9 @@ class RewardAnalyzer:
         """
         self.rewards_history.append(rewards.copy())
 
-    def analyze_distribution(self, rewards: Optional[np.ndarray] = None) -> Dict[str, float]:
+    def analyze_distribution(
+        self, rewards: Optional[np.ndarray] = None
+    ) -> Dict[str, float]:
         """
         Analyze reward distribution.
 
@@ -90,7 +92,7 @@ class RewardAnalyzer:
         self,
         rewards: Optional[np.ndarray] = None,
         threshold: float = 3.0,
-    ) -> Dict[str, any]:
+    ) -> Dict[str, Any]:
         """
         Detect outliers in reward signal.
 
@@ -152,7 +154,9 @@ class RewardAnalyzer:
 
         return analysis
 
-    def reward_quality_metrics(self, rewards: Optional[np.ndarray] = None) -> Dict[str, float]:
+    def reward_quality_metrics(
+        self, rewards: Optional[np.ndarray] = None
+    ) -> Dict[str, float]:
         """
         Compute reward quality metrics.
 

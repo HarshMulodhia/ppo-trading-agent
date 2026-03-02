@@ -61,7 +61,9 @@ class PerformanceMonitor:
         if len(self.returns) > 10:
             self.baseline_mean = np.mean(self.returns)
             self.baseline_std = np.std(self.returns)
-            logger.info(f"Baseline set: mean={self.baseline_mean:.4f}, std={self.baseline_std:.4f}")
+            logger.info(
+                f"Baseline set: mean={self.baseline_mean:.4f}, std={self.baseline_std:.4f}"
+            )
 
     def detect_drift(self, threshold: float = 2.0) -> bool:
         """
@@ -105,7 +107,9 @@ class PerformanceMonitor:
             "daily_return": float(self.returns[-1]) if self.returns else 0.0,
             "daily_profit": float(self.profits[-1]) if self.profits else 0.0,
             "avg_return": float(np.mean(self.returns)),
-            "sharpe_ratio": float(np.mean(self.returns) / max(np.std(self.returns), 1e-8)),
+            "sharpe_ratio": float(
+                np.mean(self.returns) / max(np.std(self.returns), 1e-8)
+            ),
             "max_profit": float(np.max(self.profits)) if self.profits else 0.0,
             "min_profit": float(np.min(self.profits)) if self.profits else 0.0,
         }

@@ -158,9 +158,14 @@ def main():
     """Generate reports."""
     parser = argparse.ArgumentParser(description="Generate analysis reports")
     parser.add_argument("--metrics", type=str, required=True, help="Metrics file")
-    parser.add_argument("--output", type=str, default="reports", help="Output directory")
     parser.add_argument(
-        "--formats", nargs="+", default=["markdown", "json", "html"], help="Report formats"
+        "--output", type=str, default="reports", help="Output directory"
+    )
+    parser.add_argument(
+        "--formats",
+        nargs="+",
+        default=["markdown", "json", "html"],
+        help="Report formats",
     )
 
     args = parser.parse_args()

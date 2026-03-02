@@ -10,7 +10,7 @@ This module implements a custom Gymnasium environment for trading that:
 """
 
 import logging
-from typing import Any, Dict, Optional, Tuple
+from typing import Any, Dict, List, Optional, Tuple, Union
 
 import gymnasium as gym
 import numpy as np
@@ -95,9 +95,9 @@ class TradingEnv(gym.Env):
     def reset(
         self,
         *,
-        seed: int | None = None,
-        options: dict[str, Any] | None = None,
-    ) -> tuple[np.ndarray, dict[str, Any]]:
+        seed: Optional[int] = None,
+        options: Optional[Dict[str, Any]] = None,
+    ) -> Tuple[np.ndarray, Dict[str, Any]]:
         """
         Reset environment to initial state.
 
@@ -248,7 +248,7 @@ class TradingEnv(gym.Env):
 
         # Component 3: Drawdown penalty
         max_dd = self._compute_max_drawdown(portfolio_values)
-        dd_penalty = max(-0.2 * max(0, max_dd - 0.15), -0.5)  # Penalize if DD > 15%
+        dd_penalty = max(-0.2 * max(0, -max_dd - 0.15), -0.5)  # Penalize if DD > 15%
 
         # Component 4: Trading frequency penalty
         trade_penalty = 0.0
@@ -256,7 +256,9 @@ class TradingEnv(gym.Env):
             trade_penalty = -0.01
 
         # Composite reward
-        reward = 0.5 * recent_return + 0.3 * sharpe_approx + 0.2 * dd_penalty + trade_penalty
+        reward = (
+            0.5 * recent_return + 0.3 * sharpe_approx + 0.2 * dd_penalty + trade_penalty
+        )
 
         return float(reward)
 
@@ -279,7 +281,7 @@ class TradingEnv(gym.Env):
 
         return float(np.min(drawdown))
 
-    def render(self) -> RenderFrame | list[RenderFrame] | None:
+    def render(self) -> Optional[Union[RenderFrame, List[RenderFrame]]]:
         """
         Render environment state (optional).
 
@@ -310,7 +312,9 @@ class TradingEnv(gym.Env):
         if len(returns) == 0:
             return {}
 
-        total_return = (portfolio_values[-1] - portfolio_values[0]) / portfolio_values[0]
+        total_return = (portfolio_values[-1] - portfolio_values[0]) / portfolio_values[
+            0
+        ]
         sharpe = np.mean(returns) / (np.std(returns) + 1e-8) * np.sqrt(252)
         max_dd = self._compute_max_drawdown(portfolio_values)
         win_rate = np.mean(returns > 0)

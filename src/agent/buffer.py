@@ -76,7 +76,9 @@ class ExperienceBuffer:
             Dictionary with batched experiences
         """
         if len(self.buffer) < batch_size:
-            raise ValueError(f"Buffer size ({len(self.buffer)}) < batch size ({batch_size})")
+            raise ValueError(
+                f"Buffer size ({len(self.buffer)}) < batch size ({batch_size})"
+            )
 
         indices = np.random.choice(len(self.buffer), batch_size, replace=False)
         experiences = [self.buffer[i] for i in indices]
@@ -215,8 +217,14 @@ class RolloutBuffer:
             else:
                 next_value = self.values[t + 1]
 
-            delta = self.rewards[t] + gamma * next_value * (1 - self.dones[t]) - self.values[t]
-            advantages[t] = delta + gamma * gae_lambda * (1 - self.dones[t]) * last_advantage
+            delta = (
+                self.rewards[t]
+                + gamma * next_value * (1 - self.dones[t])
+                - self.values[t]
+            )
+            advantages[t] = (
+                delta + gamma * gae_lambda * (1 - self.dones[t]) * last_advantage
+            )
             last_advantage = advantages[t]
 
         self.advantages = advantages

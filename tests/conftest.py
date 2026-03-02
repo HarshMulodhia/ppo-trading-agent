@@ -111,9 +111,9 @@ def sample_config():
 
 
 @pytest.fixture(scope="session")
-def test_data_path(file):
+def test_data_path():
     """Get path to test data directory."""
-    return Path(file).parent / "test_data"
+    return Path(__file__).parent / "test_data"
 
 
 # Pytest hooks for test output

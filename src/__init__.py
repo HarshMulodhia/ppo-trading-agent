@@ -15,8 +15,7 @@ Modules:
 __version__ = "1.0.0"
 __author__ = "Harsh Mulodhia"
 
-from . import (agent, data, deployment, environment, evaluation, reward,
-               training, utils)
+from . import agent, data, deployment, environment, evaluation, reward, training, utils
 
 __all__ = [
     "agent",

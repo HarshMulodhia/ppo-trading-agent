@@ -41,13 +41,17 @@ class TrainingLogger:
         self.current_step = 0
 
         # Setup file logging
-        self.log_file = self.log_dir / f"training_{datetime.now().strftime('%Y%m%d_%H%M%S')}.log"
+        self.log_file = (
+            self.log_dir / f"training_{datetime.now().strftime('%Y%m%d_%H%M%S')}.log"
+        )
         self._setup_file_logging()
 
     def _setup_file_logging(self) -> None:
         """Setup file logging handler."""
         file_handler = logging.FileHandler(self.log_file)
-        formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
+        formatter = logging.Formatter(
+            "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+        )
         file_handler.setFormatter(formatter)
         logger.addHandler(file_handler)
 

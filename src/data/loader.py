@@ -57,7 +57,9 @@ class DataLoader:
         if isinstance(data.columns, pd.MultiIndex):
             # If MultiIndex, flatten it by taking first level
             # This handles yfinance multiple ticker downloads
-            data.columns = [col[0] if isinstance(col, tuple) else col for col in data.columns]
+            data.columns = [
+                col[0] if isinstance(col, tuple) else col for col in data.columns
+            ]
 
         return data
 
@@ -83,7 +85,7 @@ class DataLoader:
         # Check for NaN
         if data.isnull().any().any():
             logger.warning("Data contains NaN values - filling with forward fill")
-            data = data.fillna(method="ffill").fillna(method="bfill")
+            data = data.ffill().bfill()
 
         # Check for duplicates
         if data.index.duplicated().any():
@@ -169,7 +171,9 @@ class YahooFinanceLoader(DataLoader):
             import yfinance as yf
 
             # Download data
-            data = yf.download(symbol, start=start_date, end=end_date, progress=False, **kwargs)
+            data = yf.download(
+                symbol, start=start_date, end=end_date, progress=False, **kwargs
+            )
 
             # Handle empty data
             if data.empty:
@@ -233,7 +237,9 @@ class NSELoader(DataLoader):
                 nse_symbol = f"{symbol}.NS" if not symbol.endswith(".NS") else symbol
 
             # Download data
-            data = yf.download(nse_symbol, start=start_date, end=end_date, progress=False, **kwargs)
+            data = yf.download(
+                nse_symbol, start=start_date, end=end_date, progress=False, **kwargs
+            )
 
             # Handle empty data
             if data.empty:

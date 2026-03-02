@@ -63,7 +63,9 @@ class BaselineComparison:
                 # Rebalance
                 current_price = prices[i]
                 shares = (
-                    equity[i - 1] / current_price if i > 0 else self.initial_capital / current_price
+                    equity[i - 1] / current_price
+                    if i > 0
+                    else self.initial_capital / current_price
                 )
 
             if i > 0:
@@ -161,8 +163,12 @@ def main():
     """Run baseline comparison."""
     parser = argparse.ArgumentParser(description="Compare against baselines")
     parser.add_argument("--data", type=str, required=True, help="Test data path")
-    parser.add_argument("--agent-equity", type=str, required=True, help="Agent equity file")
-    parser.add_argument("--output", type=str, default="comparison_results", help="Output directory")
+    parser.add_argument(
+        "--agent-equity", type=str, required=True, help="Agent equity file"
+    )
+    parser.add_argument(
+        "--output", type=str, default="comparison_results", help="Output directory"
+    )
 
     args = parser.parse_args()
 
@@ -202,7 +208,9 @@ def main():
 
         # Determine winner
         best_strategy = max(results.items(), key=lambda x: x[1]["total_return"])
-        logger.info(f"Best strategy: {best_strategy[0]} ({best_strategy[1]['total_return']:.2%})")
+        logger.info(
+            f"Best strategy: {best_strategy[0]} ({best_strategy[1]['total_return']:.2%})"
+        )
 
     except Exception as e:
         logger.error(f"Error during comparison: {e}")

@@ -136,7 +136,9 @@ class ActorCriticNetwork(nn.Module):
 
         return action_probs, value
 
-    def get_action(self, state: torch.Tensor) -> Tuple[torch.Tensor, torch.Tensor, torch.Tensor]:
+    def get_action(
+        self, state: torch.Tensor
+    ) -> Tuple[torch.Tensor, torch.Tensor, torch.Tensor]:
         """
         Get action and log probability from policy.
 

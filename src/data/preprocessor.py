@@ -181,12 +181,12 @@ class DataPreprocessor:
         data["co_ratio"] = (data["close"] - data["open"]) / data["open"]
 
         # Upper and Lower shadows
-        data["upper_shadow"] = (data["high"] - np.maximum(data["open"], data["close"])) / data[
-            "close"
-        ]
-        data["lower_shadow"] = (np.minimum(data["open"], data["close"]) - data["low"]) / data[
-            "close"
-        ]
+        data["upper_shadow"] = (
+            data["high"] - np.maximum(data["open"], data["close"])
+        ) / data["close"]
+        data["lower_shadow"] = (
+            np.minimum(data["open"], data["close"]) - data["low"]
+        ) / data["close"]
 
         return data
 

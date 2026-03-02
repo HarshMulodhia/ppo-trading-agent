@@ -156,4 +156,6 @@ class TrainingConfig:
 
     def __repr__(self) -> str:
         """String representation."""
-        return f"TrainingConfig(path={self.config_path}, keys={list(self.config.keys())})"
+        return (
+            f"TrainingConfig(path={self.config_path}, keys={list(self.config.keys())})"
+        )

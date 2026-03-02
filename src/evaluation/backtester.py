@@ -198,7 +198,9 @@ class Backtester:
 
         # Sharpe ratio
         sharpe_ratio = (
-            np.mean(returns) / np.std(returns) * np.sqrt(252) if np.std(returns) > 0 else 0
+            np.mean(returns) / np.std(returns) * np.sqrt(252)
+            if np.std(returns) > 0
+            else 0
         )
 
         # Win rate

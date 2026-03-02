@@ -14,8 +14,12 @@ import numpy as np
 import pandas as pd
 import torch
 
-from src.deployment import (InferenceEngine, ModelManager, PerformanceMonitor,
-                            RiskManager)
+from src.deployment import (
+    InferenceEngine,
+    ModelManager,
+    PerformanceMonitor,
+    RiskManager,
+)
 from src.utils import save_json
 
 logging.basicConfig(level=logging.INFO)
@@ -117,8 +121,12 @@ def main():
     parser.add_argument(
         "--data", type=str, required=True, help="Live data stream (file for simulation)"
     )
-    parser.add_argument("--initial-capital", type=float, default=100000, help="Initial capital")
-    parser.add_argument("--output", type=str, default="trading_logs", help="Output directory")
+    parser.add_argument(
+        "--initial-capital", type=float, default=100000, help="Initial capital"
+    )
+    parser.add_argument(
+        "--output", type=str, default="trading_logs", help="Output directory"
+    )
     parser.add_argument("--simulation", action="store_true", help="Run simulation mode")
     parser.add_argument(
         "--max-duration", type=int, default=10, help="Max simulation duration (days)"
@@ -151,7 +159,9 @@ def main():
                 )
 
                 # Process and trade
-                action, confidence = system.process_observation(observation, row["close"])
+                action, confidence = system.process_observation(
+                    observation, row["close"]
+                )
 
                 if i % 252 == 0:  # Daily report
                     system.track_performance(

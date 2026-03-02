@@ -22,16 +22,20 @@ This project implements a **Single-Agent Adaptive Trading Agent** that learns op
 git clone https://github.com/HarshMulodhia/ppo-trading-agent.git
 cd ppo-trading-agent
 
-# Create virtual environment
-python -m venv venv
-source venv/bin/activate  # Windows: venv\Scripts\activate
+# Create conda environment (recommended - supports GPU training)
+conda env create -f environment.yml
+conda activate ppo-trading
 
-# Install dependencies
-pip install -r requirements.txt
+# Or use the setup script
+bash tools/setup_environment.sh
 
 # Verify installation
-python -c "import gymnasium, stable_baselines3; print('✓ Ready!')"
+python -c "import torch; print(f'PyTorch: {torch.__version__}, CUDA: {torch.cuda.is_available()}'); import gymnasium, stable_baselines3; print('✓ Ready!')"
 ```
+
+> **Note:** The project uses Conda for environment management to enable GPU-accelerated
+> training via PyTorch CUDA. See `environment.yml` for the full dependency specification.
+> For CPU-only setups, PyTorch will fall back to CPU automatically.
 
 ### First Run
 
@@ -59,6 +63,8 @@ ppo-trading-agent/
 ├── data/                   # Data storage
 ├── models/                 # Trained model checkpoints
 ├── logs/                   # Training logs and metrics
+├── environment.yml         # Conda environment (GPU-enabled)
+├── requirements.txt        # Pip requirements (fallback)
 └── outputs/                # Results and visualizations
 ```
 
@@ -132,19 +138,20 @@ See [PROJECT_STRUCTURE.md](docs/PROJECT_STRUCTURE.md) for detailed directory bre
 # config/training_config.yaml
 ppo:
   learning_rate: 3e-4
-  n_steps: 2048
-  batch_size: 64
+  n_steps: 4096
+  batch_size: 128
   n_epochs: 10
   gamma: 0.99
   gae_lambda: 0.95
   clip_range: 0.2
-  ent_coef: 0.01
+  ent_coef: 0.005
   vf_coef: 0.5
 
 training:
   total_timesteps: 500000
   eval_freq: 5000
   save_freq: 50000
+  device: auto  # auto-detects GPU
 ```
 
 ## Performance Targets
@@ -312,8 +319,9 @@ See [docs/TROUBLESHOOTING.md](docs/TROUBLESHOOTING.md) for more issues.
 
 ## Performance Benchmarks
 
-**Hardware:** GPU (Tesla V100), RAM 16GB  
-**Training Time:** ~4 hours for 500k timesteps  
+**Hardware:** GPU (Tesla V100 / RTX 3090+), RAM 16GB  
+**Environment:** Conda with PyTorch CUDA 12.1  
+**Training Time:** ~2 hours for 500k timesteps (GPU), ~8 hours (CPU)  
 **Inference:** <1ms per decision  
 **Model Size:** 2-5 MB
 
@@ -348,4 +356,4 @@ MIT License - See LICENSE file for details
 
 ---
 
-**Status:** Production-Ready | **Version:** 1.0 | **Last Updated:** December 2025
+**Status:** Production-Ready | **Version:** 1.1 | **Environment:** Conda (GPU-enabled) | **Last Updated:** March 2026

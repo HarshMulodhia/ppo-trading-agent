@@ -26,10 +26,12 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 import gymnasium as gym
 from gymnasium.wrappers import TimeLimit
 from stable_baselines3 import PPO
-from stable_baselines3.common.callbacks import (BaseCallback,
-                                                CheckpointCallback,
-                                                EvalCallback,
-                                                StopTrainingOnRewardThreshold)
+from stable_baselines3.common.callbacks import (
+    BaseCallback,
+    CheckpointCallback,
+    EvalCallback,
+    StopTrainingOnRewardThreshold,
+)
 from stable_baselines3.common.evaluation import evaluate_policy
 from stable_baselines3.common.vec_env import DummyVecEnv
 
@@ -107,7 +109,9 @@ def load_data(config: TrainingConfig) -> tuple:
     val_df = df[val_start:val_end]
     test_df = df[test_start:]
 
-    logger.info(f"Train: {len(train_df)} bars, Val: {len(val_df)}, Test: {len(test_df)}")
+    logger.info(
+        f"Train: {len(train_df)} bars, Val: {len(val_df)}, Test: {len(test_df)}"
+    )
 
     return train_df, val_df, test_df
 
@@ -181,7 +185,9 @@ def normalize_features(df: pd.DataFrame) -> pd.DataFrame:
     df["bb_position"] = (df["Close"] - df["bb_lower"]) / (bb_range + 1e-8)
 
     # Normalize volume
-    df["volume_norm"] = (df["Volume"] - df["Volume"].mean()) / (df["Volume"].std() + 1e-8)
+    df["volume_norm"] = (df["Volume"] - df["Volume"].mean()) / (
+        df["Volume"].std() + 1e-8
+    )
 
     return df
 
@@ -220,7 +226,10 @@ def create_environment(df: pd.DataFrame, config: TrainingConfig):
 
 
 def train_agent(
-    config: TrainingConfig, train_df: pd.DataFrame, val_df: pd.DataFrame, output_dir: str = "models"
+    config: TrainingConfig,
+    train_df: pd.DataFrame,
+    val_df: pd.DataFrame,
+    output_dir: str = "models",
 ):
     """Train PPO agent"""
 
@@ -285,7 +294,9 @@ def train_agent(
     )
 
     # Save final model
-    final_model_path = Path(output_dir) / f"final_model_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
+    final_model_path = (
+        Path(output_dir) / f"final_model_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
+    )
     model.save(str(final_model_path))
     logger.info(f"Model saved to {final_model_path}")
 
@@ -301,7 +312,9 @@ def main():
         default="config/default_config.yaml",
         help="Path to configuration file",
     )
-    parser.add_argument("--output", type=str, default="models", help="Output directory for models")
+    parser.add_argument(
+        "--output", type=str, default="models", help="Output directory for models"
+    )
 
     args = parser.parse_args()
 

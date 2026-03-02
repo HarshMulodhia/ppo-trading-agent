@@ -63,7 +63,9 @@ class InferenceEngine:
         """
         with torch.no_grad():
             # Convert to tensor
-            obs_tensor = torch.from_numpy(observation).float().unsqueeze(0).to(self.device)
+            obs_tensor = (
+                torch.from_numpy(observation).float().unsqueeze(0).to(self.device)
+            )
 
             # Forward pass
             output = self.model(obs_tensor)

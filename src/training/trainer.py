@@ -18,10 +18,10 @@ import numpy as np
 import torch
 import yaml
 
-from agent import PPOAgent
-from environment import TradingEnv
-from reward import RewardShaper
-from utils import timing
+from ..agent import PPOAgent
+from ..environment import TradingEnv
+from ..reward import RewardShaper
+from ..utils import timing
 
 logger = logging.getLogger(__name__)
 
@@ -86,7 +86,9 @@ class RolloutBuffer:
         self.dones.append(done)
         self.size += 1
 
-    def get_batch(self) -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
+    def get_batch(
+        self,
+    ) -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
         """
         Get all stored data as numpy arrays.
 
@@ -153,7 +155,9 @@ class PPOTrainer:
         self.consecutive_no_improvement = 0
 
         # Buffers and storage
-        self.rollout_buffer = RolloutBuffer(max_size=self.config.get("rollout_buffer_size", 2048))
+        self.rollout_buffer = RolloutBuffer(
+            max_size=self.config.get("rollout_buffer_size", 2048)
+        )
         self.reward_shaper = RewardShaper()
 
         # Training history
@@ -309,10 +313,14 @@ class PPOTrainer:
             Dictionary of loss metrics
         """
         # Get batch from buffer
-        observations, actions, rewards, values, old_log_probs = self.rollout_buffer.get_batch()
+        observations, actions, rewards, values, old_log_probs = (
+            self.rollout_buffer.get_batch()
+        )
 
         # Compute advantages and returns
-        advantages, returns = self._compute_advantages(rewards, values, np.zeros(len(rewards)))
+        advantages, returns = self._compute_advantages(
+            rewards, values, np.zeros(len(rewards))
+        )
 
         # Normalize advantages
         advantages = (advantages - advantages.mean()) / (advantages.std() + 1e-8)
@@ -328,7 +336,12 @@ class PPOTrainer:
         advantages_tensor = torch.FloatTensor(advantages).to(self.device)
         old_log_probs_tensor = torch.FloatTensor(old_log_probs).to(self.device)
 
-        metrics = {"policy_loss": 0.0, "value_loss": 0.0, "entropy": 0.0, "clip_fraction": 0.0}
+        metrics = {
+            "policy_loss": 0.0,
+            "value_loss": 0.0,
+            "entropy": 0.0,
+            "clip_fraction": 0.0,
+        }
 
         # Update for multiple epochs
         for epoch in range(num_epochs):
@@ -354,7 +367,11 @@ class PPOTrainer:
                 ratio = torch.exp(new_log_probs - old_log_probs_batch)
                 surr1 = ratio * advantages_batch
                 surr2 = (
-                    torch.clamp(ratio, 1 - self.config["clip_ratio"], 1 + self.config["clip_ratio"])
+                    torch.clamp(
+                        ratio,
+                        1 - self.config["clip_ratio"],
+                        1 + self.config["clip_ratio"],
+                    )
                     * advantages_batch
                 )
                 policy_loss = -torch.min(surr1, surr2).mean()
@@ -377,7 +394,10 @@ class PPOTrainer:
                 metrics["value_loss"] = value_loss.item()
                 metrics["entropy"] = entropy.item()
                 metrics["clip_fraction"] = (
-                    (torch.abs(ratio - 1.0) > self.config["clip_ratio"]).float().mean().item()
+                    (torch.abs(ratio - 1.0) > self.config["clip_ratio"])
+                    .float()
+                    .mean()
+                    .item()
                 )
 
                 # Backward pass
@@ -471,7 +491,7 @@ class PPOTrainer:
 
         logger.info(f"Loaded checkpoint from {checkpoint_path}")
 
-    def validate(self, validation_env: TradingEnv, num_episodes: int = 5) -> float[Any]:
+    def validate(self, validation_env: TradingEnv, num_episodes: int = 5) -> float:
         """
         Validate agent performance on validation set.
 
@@ -526,8 +546,12 @@ class PPOTrainer:
             Training history dictionary
         """
         num_episodes = num_episodes or self.config["episodes"]
-        validation_interval = validation_interval or self.config.get("validation_interval", 50)
-        checkpoint_interval = checkpoint_interval or self.config.get("checkpoint_interval", 100)
+        validation_interval = validation_interval or self.config.get(
+            "validation_interval", 50
+        )
+        checkpoint_interval = checkpoint_interval or self.config.get(
+            "checkpoint_interval", 100
+        )
 
         logger.info(f"Starting training for {num_episodes} episodes")
 
@@ -556,7 +580,8 @@ class PPOTrainer:
                     # Check for improvement
                     if (
                         val_reward
-                        > self.best_validation_reward + self.config["early_stopping"]["min_delta"]
+                        > self.best_validation_reward
+                        + self.config["early_stopping"]["min_delta"]
                     ):
                         self.best_validation_reward = val_reward
                         self.consecutive_no_improvement = 0

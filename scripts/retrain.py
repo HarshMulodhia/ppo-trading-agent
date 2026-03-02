@@ -21,10 +21,16 @@ logger = logging.getLogger(__name__)
 def main():
     """Retrain model."""
     parser = argparse.ArgumentParser(description="Retrain trading agent")
-    parser.add_argument("--model", type=str, required=True, help="Previous model version ID")
-    parser.add_argument("--data", type=str, required=True, help="New training data path")
+    parser.add_argument(
+        "--model", type=str, required=True, help="Previous model version ID"
+    )
+    parser.add_argument(
+        "--data", type=str, required=True, help="New training data path"
+    )
     parser.add_argument("--epochs", type=int, default=100, help="Training epochs")
-    parser.add_argument("--output", type=str, default="models", help="Model output directory")
+    parser.add_argument(
+        "--output", type=str, default="models", help="Model output directory"
+    )
     parser.add_argument(
         "--pretrain", action="store_true", help="Use previous model as initialization"
     )

@@ -12,9 +12,15 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from src.evaluation import (AgentEvaluator, Backtester, EvaluationResult,
-                            PerformanceMetrics, Portfolio, ResultsVisualizer,
-                            compute_metrics)
+from src.evaluation import (
+    AgentEvaluator,
+    Backtester,
+    EvaluationResult,
+    PerformanceMetrics,
+    Portfolio,
+    ResultsVisualizer,
+    compute_metrics,
+)
 
 # Configure logging for tests
 logger = logging.getLogger(__name__)

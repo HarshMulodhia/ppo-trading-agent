@@ -1,5 +1,5 @@
 # Training Configuration
-# PPO agent training parameters
+# PPO agent training parameters (tuned for GPU training)
 
 training:
   # Algorithm settings
@@ -7,7 +7,7 @@ training:
   
   # Network architecture
   network:
-    hidden_sizes: [128, 64]
+    hidden_sizes: [256, 128]
     activation: "relu"
     output_activation: "linear"
   
@@ -16,8 +16,8 @@ training:
   learning_rate_schedule: "constant"  # Options: constant, decay, annealing
   
   # Batch and episode settings
-  batch_size: 64
-  rollout_buffer_size: 2048
+  batch_size: 128
+  rollout_buffer_size: 4096
   episodes: 1000
   steps_per_episode: 500
   
@@ -27,21 +27,21 @@ training:
   
   # PPO specific
   clip_ratio: 0.2
-  entropy_coeff: 0.01
+  entropy_coeff: 0.005
   value_coeff: 0.5
   max_grad_norm: 0.5
   
   # Optimization
-  num_epochs: 3
-  num_minibatches: 4
+  num_epochs: 4
+  num_minibatches: 8
   optimizer: "adam"  # Options: adam, rmsprop, sgd
   
   # Regularization
   l2_reg: 0.0
   dropout: 0.0
   
-  # Device settings
-  device: "cpu"  # Options: cpu, cuda
+  # Device settings (auto-detects GPU if available)
+  device: "auto"  # Options: auto, cpu, cuda
   seed: 42
   
   # Checkpointing

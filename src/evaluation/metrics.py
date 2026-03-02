@@ -216,7 +216,9 @@ def compute_calmar_ratio(returns: np.ndarray, periods_per_year: int = 252) -> fl
 
     # Compute cumulative return
     cumulative_returns = np.cumprod(1 + np.array(returns)) - 1
-    annual_return = (1 + cumulative_returns[-1]) ** (periods_per_year / len(returns)) - 1
+    annual_return = (1 + cumulative_returns[-1]) ** (
+        periods_per_year / len(returns)
+    ) - 1
 
     # Compute max drawdown from returns
     portfolio_values = np.cumprod(1 + np.array(returns))
@@ -262,7 +264,9 @@ def compute_total_return(prices: np.ndarray) -> float:
     return float((prices[-1] - prices[0]) / prices[0])
 
 
-def clip_values(values: np.ndarray, min_val: float = -5.0, max_val: float = 5.0) -> np.ndarray:
+def clip_values(
+    values: np.ndarray, min_val: float = -5.0, max_val: float = 5.0
+) -> np.ndarray:
     """
     Clip values to range to handle outliers.
 

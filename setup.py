@@ -46,6 +46,7 @@ setup(
         "pandas>=1.5.0",
         "yfinance>=0.2.28",
         "pyyaml>=6.0",
+        "pyarrow>=12.0.0",
     ],
     extras_require={
         "financial": [
